@@ -32,14 +32,14 @@
 </div></section>
 <section class="section" id="pricing"><div class="container"><div class="eyebrow">Choose your coaching</div><h2>Simple packages. No guesswork.</h2>
 <div class="grid">
-<div class="card"><span class="tag">IN-PERSON</span><h3>Single Session</h3><div class="price">£35</div><p>60-minute 1-to-1 personal training session.</p></div>
-<div class="card"><span class="tag">IN-PERSON</span><h3>4 Sessions</h3><div class="price">£125<span class="small"> / month</span></div><p>1 session per week with structured progression.</p></div>
-<div class="card"><span class="tag">IN-PERSON</span><h3>8 Sessions</h3><div class="price">£235<span class="small"> / month</span></div><p>2 sessions per week with structured progression.</p></div>
-<div class="card"><span class="tag">ONLINE</span><h3>Online Essentials</h3><div class="price">£60<span class="small"> / month</span></div><ul class="list"><li>Personalised programme</li><li>Monthly review</li><li>Basic calorie & protein guidance</li></ul></div>
-<div class="card popular"><span class="tag">ONLINE · MOST POPULAR</span><h3>Online Coaching</h3><div class="price">£90<span class="small"> / month</span></div><ul class="list"><li>Weekly check-ins</li><li>Personalised programme & adjustments</li><li>Progress tracking</li><li>Nutrition/macro guidance</li><li>Accountability & message support</li></ul></div>
-<div class="card"><span class="tag">ONLINE</span><h3>Premium Coaching</h3><div class="price">£130<span class="small"> / month</span></div><ul class="list"><li>Higher-touch coaching</li><li>Video form reviews</li><li>More frequent adjustments</li><li>Monthly coaching call</li></ul></div>
+<div class="card"><span class="tag">IN-PERSON</span><h3>Single Session</h3><div class="price" data-price="single">£35</div><p>60-minute 1-to-1 personal training session.</p></div>
+<div class="card"><span class="tag">IN-PERSON</span><h3>4 Sessions</h3><div class="price" data-price="four_sessions">£125<span class="small"> / month</span></div><p>1 session per week with structured progression.</p></div>
+<div class="card"><span class="tag">IN-PERSON</span><h3>8 Sessions</h3><div class="price" data-price="eight_sessions">£235<span class="small"> / month</span></div><p>2 sessions per week with structured progression.</p></div>
+<div class="card"><span class="tag">ONLINE</span><h3>Online Essentials</h3><div class="price" data-price="essentials">£60<span class="small"> / month</span></div><ul class="list"><li>Personalised programme</li><li>Monthly review</li><li>Basic calorie & protein guidance</li></ul></div>
+<div class="card popular"><span class="tag">ONLINE · MOST POPULAR</span><h3>Online Coaching</h3><div class="price" data-price="online">£90<span class="small"> / month</span></div><ul class="list"><li>Weekly check-ins</li><li>Personalised programme & adjustments</li><li>Progress tracking</li><li>Nutrition/macro guidance</li><li>Accountability & message support</li></ul></div>
+<div class="card"><span class="tag">ONLINE</span><h3>Premium Coaching</h3><div class="price" data-price="premium">£130<span class="small"> / month</span></div><ul class="list"><li>Higher-touch coaching</li><li>Video form reviews</li><li>More frequent adjustments</li><li>Monthly coaching call</li></ul></div>
 </div>
-<div class="card" style="margin-top:16px"><span class="tag">HYBRID</span><h3>Hybrid Coaching — £150 / month</h3><p>Online coaching plus 2 in-person 60-minute PT sessions each month, including weekly check-ins, personalised programming, progress tracking, nutrition/macro guidance and accountability.</p></div>
+<div class="card" style="margin-top:16px"><span class="tag">HYBRID</span><h3>Hybrid Coaching — <span data-price="hybrid">£150</span> / month</h3><p>Online coaching plus 2 in-person 60-minute PT sessions each month, including weekly check-ins, personalised programming, progress tracking, nutrition/macro guidance and accountability.</p></div>
 </div></section>
 <section class="section"><div class="container"><div class="grid"><div><div class="eyebrow">How it works</div><h2>From first message to a plan.</h2></div><div class="card"><h3>01 · Enquire</h3><p>Tell me your goal, preferred service and availability.</p><br><h3>02 · Consultation</h3><p>We discuss where you are now and what you want to achieve.</p><br><h3>03 · Get started</h3><p>Your training and coaching plan is built around you.</p><br><h3>04 · Progress</h3><p>We review, adjust and keep you accountable.</p></div></div></div></section>
 <section class="section" id="contact"><div class="container"><div class="cta"><div class="eyebrow">Ready to get started?</div><h2>Let's work towards your goal.</h2><p>Complete the quick application below. I’ll review your goals, experience and availability, then get back to you about the best coaching option.</p>
@@ -48,4 +48,19 @@
 </main>
 <footer class="container footer">Reontae Marshall · Personal Trainer · Nottingham<br><br><a href="https://instagram.com/reontae.fit" style="color:inherit">Instagram: @reontae.fit</a> · <a href="mailto:ptmarshall02@outlook.com" style="color:inherit">ptmarshall02@outlook.com</a> · <a href="https://wa.me/447426309493" style="color:inherit">WhatsApp: 07426309493</a></footer>
 </div>
+<script>
+// Prices are controlled by prices.json in this same GitHub repository.
+fetch('./prices.json', {cache:'no-store'})
+  .then(response => { if (!response.ok) throw new Error('Prices unavailable'); return response.json(); })
+  .then(prices => {
+    document.querySelectorAll('[data-price]').forEach(element => {
+      const amount = prices[element.dataset.price];
+      if (typeof amount !== 'number' || !Number.isFinite(amount) || amount < 0) return;
+      // Preserve the existing '/ month' labels inside the price elements.
+      const firstText = [...element.childNodes].find(node => node.nodeType === Node.TEXT_NODE);
+      if (firstText) firstText.textContent = '£' + amount;
+    });
+  })
+  .catch(() => { /* Keep the existing displayed prices if prices.json cannot load. */ });
+</script>
 </body></html>

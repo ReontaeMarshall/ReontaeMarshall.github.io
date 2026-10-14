@@ -1,0 +1,9 @@
+{
+  "single": 35,
+  "four_sessions": 125,
+  "eight_sessions": 235,
+  "essentials": 60,
+  "online": 90,
+  "premium": 130,
+  "hybrid": 150
+}
